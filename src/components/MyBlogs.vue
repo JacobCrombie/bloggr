@@ -1,15 +1,15 @@
 <template>
-  <div class="blog col-3">
-    <router-link :to="{name: 'ActiveBlog', params:{id: blogProp.id}}">
+  <div class="myblogs col-4">
+    <router-link :to="{name: 'ActiveBlog', params:{id: myblogProp.id}}">
       <div class="card my-1">
         <img
           class="card-img-top rounded p-1"
-          :src="blogProp.imgUrl || 'https://www.artmarketstudies.org/wp-content/uploads/2016/10/blogging.jpg'"
+          :src="myblogProp.imgUrl || 'https://www.artmarketstudies.org/wp-content/uploads/2016/10/blogging.jpg'"
           alt
         />
         <div class="card-body">
-          <h4 class="card-title truncate">{{blogProp.title}}</h4>
-          <p class="card-text truncate">{{blogProp.body}}</p>
+          <h4 class="card-title truncate">{{myblogProp.title}}</h4>
+          <p class="card-text truncate">{{myblogProp.body}}</p>
         </div>
       </div>
     </router-link>
@@ -19,8 +19,8 @@
 
 <script>
 export default {
-  name: "blog",
-  props: ["blogProp"],
+  name: "myblogs",
+  props: ["myblogProp"],
   data() {
     return {};
   },
