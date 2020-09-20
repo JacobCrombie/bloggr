@@ -11,6 +11,17 @@
           v-if="profile.email == commentProp.creatorEmail"
           @click="deleteComment()"
         >Delete</button>
+        <form class="d-flex form-inline col mb-2" @submit.prevent="editComment(commentProp.id)">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              v-model="editCommentData.body"
+              placeholder="Edit Comment..."
+            />
+            <button class="btn btn-warning">Edit Comment</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -22,7 +33,9 @@ export default {
   name: "comment",
   props: ["commentProp"],
   data() {
-    return {};
+    return {
+      editCommentData: {},
+    };
   },
   computed: {
     profile() {
@@ -32,6 +45,13 @@ export default {
   methods: {
     deleteComment() {
       this.$store.dispatch("deleteComment", this.commentProp);
+    },
+    editComment(cId) {
+      this.$store.dispatch("editComment", {
+        body: this.editCommentData.body,
+        id: cId,
+        blog: this.commentProp.blog,
+      });
     },
   },
   components: {},

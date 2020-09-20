@@ -16,18 +16,35 @@
             @click="deleteBlog"
             v-if="profile.email == blog.creatorEmail"
           >Delete</button>
-          <form class="d-flex form-inline col" @submit.prevent="addComment">
+          <form class="d-flex form-inline col mt-2" @submit.prevent="editBlog">
             <div class="form-group">
               <input
                 type="text"
                 class="form-control"
-                v-model="newComment.body"
-                placeholder="Add Comment..."
+                v-model="editBlogData.body"
+                placeholder="Edit BlogBody..."
               />
-              <button class="btn btn-success">Add</button>
+              <input
+                type="text"
+                class="form-control"
+                v-model="editBlogData.title"
+                placeholder="Edit BlogTitle..."
+              />
+              <button class="btn btn-warning" type="submit">Edit Blog</button>
             </div>
           </form>
         </div>
+        <form class="d-flex form-inline col mb-2" @submit.prevent="addComment">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              v-model="newComment.body"
+              placeholder="Add Comment..."
+            />
+            <button class="btn btn-success">Add</button>
+          </div>
+        </form>
       </div>
     </div>
     <div class>
@@ -44,12 +61,16 @@ export default {
   mounted() {
     this.$store.dispatch("getActiveBlog", this.$route.params.id);
     this.$store.dispatch("getCommentsByBlogId", this.$route.params.id);
+    this.$store.dispatch("getProfile");
   },
   data() {
     return {
       newComment: {
         creatorEmail: this.$store.state.profile.email,
         blog: this.$route.params.id,
+      },
+      editBlogData: {
+        id: this.$route.params.id,
       },
     };
   },
@@ -70,6 +91,9 @@ export default {
     },
     deleteBlog() {
       this.$store.dispatch("deleteBlog", this.blog.id);
+    },
+    editBlog() {
+      this.$store.dispatch("editBlog", this.editBlogData);
     },
   },
   components: {

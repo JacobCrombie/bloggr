@@ -58,7 +58,6 @@ export default new Vuex.Store({
     async getActiveBlog({ commit, dispatch }, blogId) {
       try {
         let res = await api.get('blogs/' + blogId,)
-        console.log(res);
         commit('setActiveBlog', res.data)
       } catch (error) {
         console.error(error);
@@ -113,6 +112,22 @@ export default new Vuex.Store({
         await api.delete('blogs/' + id)
         dispatch('getAllBlogs')
         router.push({ name: 'Home' })
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async editComment({ commit, dispatch }, commentData) {
+      try {
+        await api.put('comments/' + commentData.id, { body: commentData.body })
+        dispatch('getCommentsByBlogId', commentData.blog)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async editBlog({ commit, dispatch }, blogData) {
+      try {
+        await api.put('blogs/' + blogData.id, blogData)
+        dispatch('getActiveBlog', blogData.id)
       } catch (error) {
         console.error(error);
       }
