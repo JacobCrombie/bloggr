@@ -61,7 +61,6 @@ export default {
   },
   methods: {
     createBlog() {
-      console.log();
       this.$store.dispatch("createBlog", this.newBlog);
       this.newBlog = {};
     },

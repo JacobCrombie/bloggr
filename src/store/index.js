@@ -11,6 +11,7 @@ export default new Vuex.Store({
     blogs: [],
     activeBlog: {},
     myBlogs: [],
+    comments: []
 
   },
   mutations: {
@@ -28,6 +29,12 @@ export default new Vuex.Store({
     },
     setMyBlogs(state, myBlogs) {
       state.myBlogs = myBlogs
+    },
+    addComment(state, comment) {
+      state.comments.push(comment)
+    },
+    setAllComments(state, comments) {
+      state.comments = comments
     }
 
   },
@@ -75,6 +82,23 @@ export default new Vuex.Store({
         }
       }
       commit('setMyBlogs', myBlogs)
+    },
+    async getCommentsByBlogId({ commit, dispatch }, blogId) {
+      try {
+        let res = await api.get('blogs/' + blogId + '/comments')
+        commit('setAllComments', res.data)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async addComment({ commit, dispatch }, commentData) {
+      try {
+        let res = await api.post('comments', commentData)
+        commit('addComment', res.data)
+        dispatch("getCommentsByBlogId", commentData.blog)
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
 });
