@@ -4,8 +4,18 @@
       <div class="card col mt-5" v-if="blog.id">
         <div class="card-header">{{blog.creator.name}}</div>
         <div class="card-body">
+          <img
+            class="card-img-top rounded p-1"
+            :src="blog.imgUrl || 'https://www.artmarketstudies.org/wp-content/uploads/2016/10/blogging.jpg'"
+            alt
+          />
           <h5 class="card-title">{{blog.title}}</h5>
           <p class="card-text">{{blog.body}}</p>
+          <button
+            class="btn btn-danger"
+            @click="deleteBlog"
+            v-if="profile.email == blog.creatorEmail"
+          >Delete</button>
           <form class="d-flex form-inline col" @submit.prevent="addComment">
             <div class="form-group">
               <input
@@ -17,11 +27,11 @@
               <button class="btn btn-success">Add</button>
             </div>
           </form>
-          <div>
-            <comment-comp v-for="comment in comments" :key="comment.id" :commentProp="comment" />
-          </div>
         </div>
       </div>
+    </div>
+    <div class>
+      <comment-comp v-for="comment in comments" :key="comment.id" :commentProp="comment" />
     </div>
   </div>
 </template>
@@ -58,6 +68,9 @@ export default {
     addComment() {
       this.$store.dispatch("addComment", this.newComment);
     },
+    deleteBlog() {
+      this.$store.dispatch("deleteBlog", this.blog.id);
+    },
   },
   components: {
     CommentComp,
@@ -67,6 +80,10 @@ export default {
 
 
 <style scoped>
+img {
+  height: 500px;
+  width: auto;
+}
 input {
   width: 80%;
 }

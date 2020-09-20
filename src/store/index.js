@@ -99,6 +99,23 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error);
       }
+    },
+    async deleteComment({ commit, dispatch }, comment) {
+      try {
+        await api.delete("comments/" + comment.id)
+        dispatch('getCommentsByBlogId', comment.blog)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteBlog({ commit, dispatch }, id) {
+      try {
+        await api.delete('blogs/' + id)
+        dispatch('getAllBlogs')
+        router.push({ name: 'Home' })
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
 });

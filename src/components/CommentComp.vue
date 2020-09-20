@@ -2,8 +2,15 @@
   <div class="comment">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">{{commentProp.creator.name}}</h4>
+        <h6 class="card-title">{{commentProp.creatorEmail}}</h6>
         <p class="card-text">{{commentProp.body}}</p>
+      </div>
+      <div class="col">
+        <button
+          class="btn btn-danger col-4"
+          v-if="profile.email == commentProp.creatorEmail"
+          @click="deleteComment()"
+        >Delete</button>
       </div>
     </div>
   </div>
@@ -17,8 +24,16 @@ export default {
   data() {
     return {};
   },
-  computed: {},
-  methods: {},
+  computed: {
+    profile() {
+      return this.$store.state.profile;
+    },
+  },
+  methods: {
+    deleteComment() {
+      this.$store.dispatch("deleteComment", this.commentProp);
+    },
+  },
   components: {},
 };
 </script>
