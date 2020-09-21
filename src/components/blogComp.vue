@@ -2,6 +2,7 @@
   <div class="blog col-3">
     <router-link :to="{name: 'ActiveBlog', params:{id: blogProp.id}}">
       <div class="card my-1">
+        <div class="card-header">{{blogProp.creatorEmail}}</div>
         <img
           class="card-img-top rounded p-1"
           :src="blogProp.imgUrl || 'https://www.artmarketstudies.org/wp-content/uploads/2016/10/blogging.jpg'"

@@ -5,7 +5,7 @@
         <h6 class="card-title">{{commentProp.creatorEmail}}</h6>
         <p class="card-text">{{commentProp.body}}</p>
       </div>
-      <div class="col">
+      <div class="col" v-if="commentProp.creatorEmail == profile.email">
         <button
           class="btn btn-danger col-4"
           v-if="profile.email == commentProp.creatorEmail"
@@ -46,12 +46,14 @@ export default {
     deleteComment() {
       this.$store.dispatch("deleteComment", this.commentProp);
     },
-    editComment(cId) {
-      this.$store.dispatch("editComment", {
+    //REVIEW i know this is wrong too but it does work
+    async editComment(cId) {
+      await this.$store.dispatch("editComment", {
         body: this.editCommentData.body,
         id: cId,
         blog: this.commentProp.blog,
       });
+      this.editCommentData.body = null;
     },
   },
   components: {},

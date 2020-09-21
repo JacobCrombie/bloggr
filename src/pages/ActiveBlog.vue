@@ -11,28 +11,30 @@
           />
           <h5 class="card-title">{{blog.title}}</h5>
           <p class="card-text">{{blog.body}}</p>
-          <button
-            class="btn btn-danger"
-            @click="deleteBlog"
-            v-if="profile.email == blog.creatorEmail"
-          >Delete</button>
-          <form class="d-flex form-inline col mt-2" @submit.prevent="editBlog">
-            <div class="form-group">
-              <input
-                type="text"
-                class="form-control"
-                v-model="editBlogData.body"
-                placeholder="Edit BlogBody..."
-              />
-              <input
-                type="text"
-                class="form-control"
-                v-model="editBlogData.title"
-                placeholder="Edit BlogTitle..."
-              />
-              <button class="btn btn-warning" type="submit">Edit Blog</button>
-            </div>
-          </form>
+          <div v-if="blog.creatorEmail == profile.email">
+            <button
+              class="btn btn-danger"
+              @click="deleteBlog"
+              v-if="profile.email == blog.creatorEmail"
+            >Delete</button>
+            <form class="d-flex form-inline col mt-2" @submit.prevent="editBlog">
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="editBlogData.body"
+                  placeholder="Edit BlogBody..."
+                />
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="editBlogData.title"
+                  placeholder="Edit BlogTitle..."
+                />
+                <button class="btn btn-warning" type="submit">Edit Blog</button>
+              </div>
+            </form>
+          </div>
         </div>
         <form class="d-flex form-inline col mb-2" @submit.prevent="addComment">
           <div class="form-group">
@@ -86,14 +88,19 @@ export default {
     },
   },
   methods: {
-    addComment() {
-      this.$store.dispatch("addComment", this.newComment);
+    async addComment() {
+      await this.$store.dispatch("addComment", this.newComment);
+      //REVIEW i know this cant be right
+      this.newComment.body = null;
     },
     deleteBlog() {
       this.$store.dispatch("deleteBlog", this.blog.id);
     },
-    editBlog() {
-      this.$store.dispatch("editBlog", this.editBlogData);
+    //REVIEW i dont know what im doing ask a professional
+    async editBlog() {
+      await this.$store.dispatch("editBlog", this.editBlogData);
+      this.editBlogData.title = null;
+      this.editBlogData.body = null;
     },
   },
   components: {
